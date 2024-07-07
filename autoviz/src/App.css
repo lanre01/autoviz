@@ -1,0 +1,33 @@
+:root{
+  --dark: #393E41;
+  --light: #F6F7EB;
+  --accent: #F97432;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  font-family: 'Jost', sans-serif;
+  text-wrap: balance;
+  /* font-family: 'Libre Bodoni', serif; */
+}
+
+.App {
+  text-align: center;
+  background-color: #282c34;
+}
+
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+
