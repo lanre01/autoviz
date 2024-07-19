@@ -1,0 +1,19 @@
+.home {
+    display: grid;
+    align-content: center;
+    align-items: center;
+    width: 500px;
+    height: 200px;
+    /* background-color: red; */
+}
+
+.home input {
+    width: 100px;
+    margin: 0px 150px 30px 150px;
+}
+
+.home button {
+    width: 50px;
+    margin: 0px 165px;
+    
+}

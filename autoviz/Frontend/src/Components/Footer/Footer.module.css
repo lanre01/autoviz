@@ -1,0 +1,28 @@
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: aliceblue;
+    position: fixed;
+    
+}
+
+.footer div {
+    padding: 20px;
+    display: grid;
+    justify-content: space-around;
+  
+}
+
+.footer div ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+}
+
+.footer div ul li {
+    padding: 20px 10px;
+}
+.footer div h3, .footer div h4 {
+    padding: 10px;
+}
