@@ -1,13 +1,13 @@
 from flask import Flask, request
-
+from flask_cors import CORS
  
  
 # Initializing flask app
 app = Flask(__name__)
- 
+CORS(app)
  
 # Route for seeing a data
-@app.route('/compute', methods=['POST'])
+@app.route('/compute', methods=['GET','POST'])
 def compute():
     #csv_file = request.files['file.csv']
     

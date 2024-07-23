@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import classes from './Home.module.css'
 
 function Home() {
     
-    const [file, setFile] = useState();
-    const history = useHistory();
-
-    const [fileTitle, setFileTitle] = useState();
+    const [_file, setFile] = useState();
+    const navigate = useNavigate();
 
     const handleFileChange = (event) => {
-        const _file = event.target.files[0];
-        setFileTitle(_file.name);
-        setFile(_file);
+        //setFileTitle(_file.name);
+        setFile(event.target.files[0]);
+        console.log(_file);
 
         /* if (file) {
         // You can use FileReader here to read the file content
@@ -29,20 +27,22 @@ function Home() {
 
     const sendFile = async (event) => {
         event.preventDefault();
+        
         const formData = new FormData();
-        formData.append('file', file);
-
+        formData.append('file', _file); 
+    
         try {
-            const response = await axios.post('http://server:5000/compute', formData, {
+            const response = await axios.post('/api/compute', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
+    
             // push the response data to the processed page
-            history.push('/processed', {result: response.data});
-
+            navigate('/Processed', { state: response.data });
+    
         } catch(error) {
-            console.error('Error uploading file:', error);
+            console.error('Error uploading file: ', error);
         }
     }
     return (
@@ -51,8 +51,8 @@ function Home() {
                 <input type="file" onChange={handleFileChange} />
                 <button type="submit">Upload</button>
             </form>
-            <input type="file" onChange={handleFileChange} />
-            <button onSubmit={sendFile}>Submit</button>
+            {/* <input type="file" onChange={handleFileChange} />
+            <button onSubmit={sendFile}>Submit</button> */}
         </div>
     );
 }

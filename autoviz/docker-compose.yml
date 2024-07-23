@@ -1,7 +1,18 @@
 version: '3'
 
 services:
-  server:
+  nginx:
+    restart: always
+    build: 
+      dockerfile: Dockerfile.dev 
+      context: ./nginx
+    depends_on:
+      - api
+      - frontend
+    ports:
+      - '3050:80'
+
+  api:
     build: 
       dockerfile: Dockerfile.dev 
       context: ./Backend

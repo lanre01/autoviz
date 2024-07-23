@@ -2,7 +2,8 @@ FROM node:14-alpine
 WORKDIR "/app"
 COPY ./package.json ./
 RUN npm install 
-RUN npm install axios
 RUN npm install react-router-dom
+RUN npm i axios
+
 COPY . .
 CMD [ "npm", "start"]
