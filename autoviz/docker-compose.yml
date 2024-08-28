@@ -28,4 +28,4 @@ services:
       - /app/node_modules
       - ./Frontend:/app 
     ports:
-      - '8000:8000'
+      - '8000:3000'

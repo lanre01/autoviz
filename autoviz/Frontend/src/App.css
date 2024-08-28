@@ -9,33 +9,20 @@
   padding: 0;
   max-width: 100%;
   font-family: 'Jost', sans-serif;
-  text-wrap: balance;
-  /* font-family: 'Libre Bodoni', serif; */
 }
 
 .App {
   text-align: center;
   background-color: #282c34;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   min-height: 100vh;
+  max-width: 100vw;
 }
 
-.App main {
-  flex: 1;
-  overflow-y: auto;
-  padding: 400px;
-}
-
-/* .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.App > main {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
 }
- */
 

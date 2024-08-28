@@ -7,13 +7,13 @@ function Footer() {
 
     return (
         <div className={classes.footer}>
-            <div>
+            <div className={classes.about}>
                 <h3>About</h3>
                 <p>
                     This is part of the 2023/2024 academic year module at the University of Nottingham.
                 </p>
             </div>
-            <div>
+            <div className={classes.contributors}>
                 <h4>Contributors</h4>
                 {/* Add emails and linkedln links to each name using icons */}
                 <ul>

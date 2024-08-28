@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import axios from 'axios';
 import classes from './Home.module.css'
 
@@ -9,20 +10,8 @@ function Home() {
     const navigate = useNavigate();
 
     const handleFileChange = (event) => {
-        //setFileTitle(_file.name);
         setFile(event.target.files[0]);
         console.log(_file);
-
-        /* if (file) {
-        // You can use FileReader here to read the file content
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const fileContent = e.target.result;
-            console.log(fileContent); // Process the file content as needed
-        };
-        reader.readAsText(file); // Read the file as text
-        
-        } */
     };
 
     const sendFile = async (event) => {
@@ -51,8 +40,6 @@ function Home() {
                 <input type="file" onChange={handleFileChange} />
                 <button type="submit">Upload</button>
             </form>
-            {/* <input type="file" onChange={handleFileChange} />
-            <button onSubmit={sendFile}>Submit</button> */}
         </div>
     );
 }
