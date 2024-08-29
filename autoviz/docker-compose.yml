@@ -18,6 +18,9 @@ services:
       context: ./Backend
     ports:
       - '5000:5000'
+    volumes:
+      - ./Backend:/app 
+      - /app/__pycache__/
 
 
   frontend:
@@ -28,4 +31,4 @@ services:
       - /app/node_modules
       - ./Frontend:/app 
     ports:
-      - '8000:3000'
+      - '3000:3000'

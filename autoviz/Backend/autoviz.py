@@ -1,125 +1,25 @@
-""" import nltk
-import tkinter as tk
-from tkinter import filedialog, ttk, messagebox
+import nltk
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
-import nltk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from wordcloud import WordCloud, STOPWORDS
 from nltk.corpus import stopwords
 import math
 from datetime import datetime
-import matplotlib.image as mpimg
 import seaborn as sns
 import os
 nltk.download('punkt')
 nltk.download('stopwords')
-
-
-def openFile():
-    filePath = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
-    if filePath:
-        try:
-            pd.read_csv(filePath)
-            print(f"File selected: {filePath}")
-            dialog.withdraw()  # Hides the dialog
-            selectColumns(filePath)
-        except Exception as e:
-            messagebox.showerror(" ", "Failed to open the file. Please make sure it's a valid CSV file.")
-            print(f"Error opening file: {e}")
-    else:
-        messagebox.showwarning("Warning", "No file selected. Please select a CSV file.")
-
-
-def createDialog():
-    global dialog
-    dialog = tk.Tk()
-    dialog.title("Open CSV File")
-    dialogWidth, dialogHeight = 300, 100
-    screenWidth = dialog.winfo_screenwidth()
-    screenHeight = dialog.winfo_screenheight()
-
-    centerX = int(screenWidth / 2 - dialogWidth / 2)
-    centerY = int(screenHeight / 2 - dialogHeight / 2)
-    dialog.geometry(f'{dialogWidth}x{dialogHeight}+{centerX}+{centerY}')
-
-    browseButton = ttk.Button(dialog, text="Browse", command=openFile)
-    browseButton.pack(expand=True)
-
-    dialog.protocol("WM_DELETE_WINDOW", onClosing)  # Handle the window close event
-
-    dialog.mainloop()
-
-
-def createMainWindow(filePath, columnsToInclude):
-    try:
-        global mainWindow
-        if 'mainWindow' in globals():
-            mainWindow.destroy()  # Ensure previous instance is destroyed
-        mainWindow = tk.Toplevel()  # Use Toplevel for secondary windows
-        mainWindow.title("CSV Data Visualization")
-        mainWindow.geometry("1280x720")
-
-        label = tk.Label(mainWindow, text=f"CSV file: {filePath}\nVisualizing columns: {', '.join(columnsToInclude)}")
-        label.pack(pady=10)
-
-        # Generate scatter plot image
-        scatter_output_file = "scatterplot.png"
-        scatterPlotVis(filePath, columnsToInclude, scatter_output_file)
-
-        # Load other visualization images
-        wordcloud_fig = WordCloudVis(filePath, columnsToInclude)
-        histogram_fig = histograms(filePath, columnsToInclude)
-        treemap_fig = TreeMapDataVis(filePath, columnsToInclude)
-        pcp_fig = PCPVis(filePath, columnsToInclude)
-
-        # Setup canvas for matplotlib figures
-        fig = plt.figure(figsize=(15, 10))  # Adjust overall figsize for better fit and aspect ratio
-
-        # Grid specification
-        grid = plt.GridSpec(2, 2, height_ratios=[3, 2])  # Adjust height ratios to give more space to plots
-
-        # Display histogram
-        ax1 = fig.add_subplot(grid[0, 0])
-        ax1.imshow(mpimg.imread("histogram.png"))
-        ax1.axis('off')
-        ax1.set_title('Histogram')
-
-        # Display wordcloud across the bottom
-        ax2 = fig.add_subplot(grid[0, 1])
-        ax2.imshow(mpimg.imread("wordcloud.png"))
-        ax2.axis('off')
-        ax2.set_title('Wordcloud')
-
-        # Display scatter plot
-        ax3 = fig.add_subplot(grid[1, :])  # Spanning entire bottom row
-        ax3.imshow(mpimg.imread(scatter_output_file))
-        ax3.axis('off')
-        ax3.set_title('Scatter Plot')
-
-        treemap_fig.show()
-        pcp_fig.show()
-
-        plt.tight_layout()
-        canvas = FigureCanvasTkAgg(fig, master=mainWindow)
-        canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-
-        mainWindow.protocol("WM_DELETE_WINDOW", lambda: mainWindow.destroy())
-    except Exception as e:
-        messagebox.showerror("Error", "There was a problem setting up the main window.")
-        print(f"Error creating main window: {e}")
-
+ 
 
 def TreeMapDataVis(filePath, columnsToInclude):
-    print("called ", filePath)
+    # print("called ", filePath)
 
     filename = filePath
 
     df = pd.read_csv(filename)
 
-    df = df[columnsToInclude]
+    # df = df[columnsToInclude]
 
     columns = df.select_dtypes(include=['float64']).columns
     dfBrokenDownlist = []
@@ -193,7 +93,7 @@ def histograms(filePath, columnsToInclude):
         data[numeric_columns].hist(bins=15, color='blue', edgecolor='black', alpha=0.7, grid=False)
         plt.subplots_adjust(left=0.1, right=0.95, top=0.95, bottom=0.15, hspace=1, wspace=1)
         plt.xticks(rotation=45)
-        plt.savefig("histogram.png")
+        # plt.savefig("histogram.png")
         return plt
     except Exception as e:
         print(f"An error occurred while plotting the histogram: {e}")
@@ -266,7 +166,7 @@ def WordCloudVis(filePath, columnsToInclude):
     stop_words = set(stopwords.words('english'))
     csv_file_path = filePath
     df = pd.read_csv(csv_file_path)
-    df = df[columnsToInclude]
+    # df = df[columnsToInclude]
     string_columns_df = df.select_dtypes(exclude=['float64'], include=['object'])
     datetime_columns = [col for col in string_columns_df.columns if pd.api.types.is_datetime64_any_dtype(string_columns_df[col])]
     string_columns_df = string_columns_df.drop(columns=datetime_columns)
@@ -378,7 +278,7 @@ def WordCloudVis(filePath, columnsToInclude):
                 plot_no_data_available()
 
         plt.tight_layout()
-        plt.savefig("wordcloud.png")
+        # plt.savefig("wordcloud.png")
         return plt
 
 
@@ -416,40 +316,5 @@ def scatterPlotVis(filePath, columnsToInclude, output_file):
     plt.close()
 
 
-def selectColumns(filePath):
-    data = pd.read_csv(filePath)
-    columns = data.columns.tolist()
-
-    def updateColumnsToVisualize():
-        selectedIndices = list(map(int, columnList.curselection()))
-        selectedColumns = [columns[i] for i in selectedIndices] or columns
-
-        createMainWindow(filePath, selectedColumns)
-
-    columnWindow = tk.Toplevel()
-    columnWindow.title("Select Columns to Visualize")
-    columnWindow.geometry("300x400")
-
-    columnList = tk.Listbox(columnWindow, selectmode='multiple')
-    for col in columns:
-        columnList.insert(tk.END, col)
-        columnList.select_set(columns.index(col))
-    columnList.pack(side="left", fill="both", expand=True)
-
-    scrollbar = ttk.Scrollbar(columnWindow, orient='vertical', command=columnList.yview)
-    scrollbar.pack(side="left", fill='y')
-    columnList.configure(yscrollcommand=scrollbar.set)
-
-    okButton = ttk.Button(columnWindow, text="OK", command=updateColumnsToVisualize)
-    okButton.pack(side="bottom", pady=10)
 
 
-def onClosing():
-    if messagebox.askokcancel("Quit", "Do you want to quit?"):
-        dialog.destroy()
-
-
-
-
-createDialog()
- """

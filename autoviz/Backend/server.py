@@ -1,40 +1,40 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
- 
- 
+from autoviz import TreeMapDataVis, histograms, PCPVis, WordCloudVis, scatterPlotVis
+
+
 # Initializing flask app
 app = Flask(__name__)
 CORS(app)
- 
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
 # Route for seeing a data
-@app.route('/compute', methods=['GET','POST'])
+@app.route('/compute', methods=['POST'])
 def compute():
     #csv_file = request.files['file.csv']
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"})
+
+    file = request.files['file']
     
-    return "<p>Hello, World!</p>"
+    
+    if file.filename == '':
+        return jsonify({"error": "No selected file"})
+    
+    if file:
+        try:
+            wordcloud = WordCloudVis(file, None)
+            treemap = TreeMapDataVis(file, None)
+
+            return {
+                "wordcloud": wordcloud,
+                "treemap": treemap
+            }
+            
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
 
 # Running app
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
-
-
-""" 
-import io
-from base64 import encodebytes
-from PIL import Image
-from flask import jsonify
-
-def get_response_image(image_path):
-    pil_img = Image.open(image_path, mode='r')
-    byte_arr = io.BytesIO()
-    pil_img.save(byte_arr, format='PNG')
-    encoded_img = encodebytes(byte_arr.getvalue()).decode('ascii')
-    return encoded_img
-
-@app.route('/get_images', methods=['GET'])
-def get_images():
-    result = get_images_from_local_storage()  # Replace with your logic
-    encoded_images = [get_response_image(image_path) for image_path in result]
-    return jsonify({'result': encoded_images}) 
-    
-"""

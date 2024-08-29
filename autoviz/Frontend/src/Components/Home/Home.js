@@ -10,12 +10,25 @@ function Home() {
     const navigate = useNavigate();
 
     const handleFileChange = (event) => {
-        setFile(event.target.files[0]);
-        console.log(_file);
+        const selectedFile = event.target.files[0];
+
+        if(selectedFile && selectedFile.name.endsWith('.csv') && selectedFile.type === 'text/csv') {
+            setFile(event.target.files[0]);
+        }
+        else {
+            setFile(null)
+            alert('Please upload a valid csv file');
+        }
+        
     };
 
     const sendFile = async (event) => {
         event.preventDefault();
+        
+        if (!_file) {
+            alert('No valid file selected.');
+            return;
+        }
         
         const formData = new FormData();
         formData.append('file', _file); 
@@ -26,9 +39,10 @@ function Home() {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-    
+            console.log(response.data);
             // push the response data to the processed page
-            navigate('/Processed', { state: response.data });
+            navigate('/Processed', { state: {data: response.data} });
+        
     
         } catch(error) {
             console.error('Error uploading file: ', error);
